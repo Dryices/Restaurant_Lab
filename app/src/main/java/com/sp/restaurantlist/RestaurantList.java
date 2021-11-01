@@ -132,7 +132,7 @@ public class RestaurantList extends AppCompatActivity {
                 holder=(RestaurantHolder)row.getTag();
             }
                 holder.populateFrom(model.get(position));
-                return (row);1
+                return (row);
             }
         }
      }
