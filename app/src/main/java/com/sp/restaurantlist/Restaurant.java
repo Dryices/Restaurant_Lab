@@ -47,11 +47,8 @@ public class Restaurant {
     @Override
     public String toString() {return (getName());}
 }
-class RestaurantAdapter extends ArrayAdapter<Restaurant>{
-    RestaurantAdapter(){
-        super(RestaurantList.this, R.layout.row,model)
-    }
-}
+
+
 
 
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -97,7 +98,7 @@ public class RestaurantList extends AppCompatActivity {
     static class RestaurantHolder {
         private TextView restName= null;
         private TextView addr= null;
-        private TextView icon= null;
+        private ImageView icon;
         RestaurantHolder(View row){
             restName=row.findViewById(R.id.restName);
             addr=row.findViewById(R.id.restAdr);
@@ -131,7 +132,7 @@ public class RestaurantList extends AppCompatActivity {
                 holder=(RestaurantHolder)row.getTag();
             }
                 holder.populateFrom(model.get(position));
-                return (row);
+                return (row);1
             }
         }
      }
