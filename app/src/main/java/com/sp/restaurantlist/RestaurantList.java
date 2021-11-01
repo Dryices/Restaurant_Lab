@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toast;
@@ -24,13 +26,14 @@ import sp.com.restaurantlist.R;
 public class RestaurantList extends AppCompatActivity {
     private EditText restaurantName;
     private RadioGroup restaurantTypes;
-    private Button buttonSave;
+
     private EditText restaurantAddress;
     private EditText restaurantTel;
 
     private List<Restaurant> model = new ArrayList<Restaurant>();
     private RestaurantAdapter adapter=null;
     private ListView list;
+    private TabHost host;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +43,31 @@ public class RestaurantList extends AppCompatActivity {
         restaurantAddress = findViewById(R.id.restaurant_address);
         restaurantTel = findViewById(R.id.restaurant_tel);
         restaurantTypes = findViewById(R.id.restaurant_types);
-        buttonSave = findViewById(R.id.button_save);
+        Button buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(onSave);
         list = findViewById(R.id.restaurants);
         adapter = new RestaurantAdapter();
         list.setAdapter(adapter);
+
+
+        host = findViewById(R.id.tabHost);
+        host.setup();
+
+        //Tab 1
+        TabHost.TabSpec spec =host.newTabSpec("List");
+        spec.setContent(R.id.restaurant_tab);
+        spec.setIndicator("List");
+        host.addTab(spec);
+
+        //Tab 2
+        spec=host.newTabSpec("Details");
+        spec.setContent(R.id.details_tab);
+        spec.setIndicator("Details");
+        host.addTab(spec);
+        host.setCurrentTab(1);
+        list.setOnItemClickListener(onListClick);
+
+
     }
 
     private View.OnClickListener onSave = new View.OnClickListener() {
@@ -93,8 +116,12 @@ public class RestaurantList extends AppCompatActivity {
             String combineStr = nameStr + "\n" +addressStr+ "\n" + telStr + "\n" + restType;
             Toast.makeText(v.getContext(), combineStr, Toast.LENGTH_LONG).show();
 
+            host.setCurrentTab(0);
+
         }
     };
+
+
     static class RestaurantHolder {
         private TextView restName= null;
         private TextView addr= null;
@@ -106,7 +133,7 @@ public class RestaurantList extends AppCompatActivity {
         }
         void populateFrom(Restaurant r){
             restName.setText(r.getName());
-            addr.setText(r.getAddress());
+            addr.setText(r.getAddress()+", "+r.getTelephone());
             if(r.getRestaurantType().equals("Chinese")) {
                 icon.setImageResource(R.drawable.ball_red);
             }
@@ -135,6 +162,40 @@ public class RestaurantList extends AppCompatActivity {
                 return (row);
             }
         }
+
+
+
+        AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Restaurant r = model.get(position);
+
+                restaurantName.setText(r.getName());
+                restaurantAddress.setText(r.getAddress());
+                restaurantTel.setText(r.getTelephone());
+
+                if (r.getRestaurantType().equals("Chinese")) {
+                    restaurantTypes.check(R.id.chinese);
+                }else if (r.getRestaurantType().equals("Western")) {
+
+                }else if (r.getRestaurantType().equals("Indian")) {
+
+                }else if (r.getRestaurantType().equals("Indian")) {
+
+                }else if (r.getRestaurantType().equals("Indonesia")) {
+
+                }else if (r.getRestaurantType().equals("Korean")) {
+
+                }else if (r.getRestaurantType().equals("Japanese")) {
+                    restaurantTypes.check(R.id.thai);
+
+                }
+                host.setCurrentTab(1);
+            }
+
+        };
+
+
      }
 
 
