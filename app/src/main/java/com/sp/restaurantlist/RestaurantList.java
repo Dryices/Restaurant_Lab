@@ -1,7 +1,10 @@
 package com.sp.restaurantlist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cursoradapter.widget.CursorAdapter;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,23 +21,19 @@ import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
-//import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import sp.com.restaurantlist.R;
 
 public class RestaurantList extends AppCompatActivity {
     private EditText restaurantName;
     private RadioGroup restaurantTypes;
-
+    private Button buttonSave;
     private EditText restaurantAddress;
     private EditText restaurantTel;
-
-    private List<Restaurant> model = new ArrayList<Restaurant>();
+    private Cursor model=null;
     private RestaurantAdapter adapter=null;
     private ListView list;
+    private RestaurantHelper helper =null;
     private TabHost host;
     private boolean showMenu = false;
 
@@ -45,11 +44,17 @@ public class RestaurantList extends AppCompatActivity {
         restaurantName = findViewById(R.id.restaurant_name);
         restaurantAddress = findViewById(R.id.restaurant_address);
         restaurantTel = findViewById(R.id.restaurant_tel);
+
+
         restaurantTypes = findViewById(R.id.restaurant_types);
-        Button buttonSave = (Button) findViewById(R.id.button_save);
+
+        buttonSave =findViewById(R.id.button_save);
         buttonSave.setOnClickListener(onSave);
+
+        helper=new RestaurantHelper(this);
         list = findViewById(R.id.restaurants);
-        adapter = new RestaurantAdapter();
+        model= helper.getAll();
+        adapter = new RestaurantAdapter(this,model,0);
         list.setAdapter(adapter);
 
 
@@ -77,6 +82,12 @@ public class RestaurantList extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected  void onDestroy() {
+        helper.close();
+        super.onDestroy();
+    }
+
     @Override
     protected  void onStart(){
         invalidateOptionsMenu();
@@ -143,18 +154,10 @@ public class RestaurantList extends AppCompatActivity {
                     break;
             }
 
-            Restaurant restaurant = new Restaurant();
-            restaurant.setName(nameStr);
-            restaurant.setAddress(addressStr);
-            restaurant.setTelephone(telStr);
-            restaurant.setRestaurantType(restType);
-            //Pass the record to ArrayAdapter
-            //It will update the ListArray and the ListView
-            adapter.add(restaurant);
+            helper.insert(nameStr,addressStr,telStr,restType);
 
-            String combineStr = nameStr + "\n" +addressStr+ "\n" + telStr + "\n" + restType;
-            Toast.makeText(v.getContext(), combineStr, Toast.LENGTH_LONG).show();
-
+            model=helper.getAll();
+            adapter.swapCursor(model);
             host.setCurrentTab(0);
 
         }
@@ -170,34 +173,37 @@ public class RestaurantList extends AppCompatActivity {
             addr=row.findViewById(R.id.restAdr);
             icon=row.findViewById(R.id.icon);
         }
-        void populateFrom(Restaurant r){
-            restName.setText(r.getName());
-            addr.setText(r.getAddress()+", "+r.getTelephone());
-            if(r.getRestaurantType().equals("Chinese")) {
+        void populateFrom(Cursor c,RestaurantHelper helper){
+            restName.setText(helper.getRestaurantName(c));
+            String temp= helper.getRestaurantAddress(c)+", "+helper.getRestaurantTel(c);
+            addr.setText(temp);
+
+            if(helper.getRestaurantType(c).equals("Chinese")) {
                 icon.setImageResource(R.drawable.ball_red);
             }
-            else if(r.getRestaurantType().equals("Western"))
+            else if(helper.getRestaurantType(c).equals("Western"))
                 icon.setImageResource(R.drawable.ball_yellow);
             else {
                 icon.setImageResource(R.drawable.ball_green);
             }
         }
     }
-    class RestaurantAdapter extends ArrayAdapter<Restaurant>{
-        RestaurantAdapter(){super (RestaurantList.this,R.layout.row,model);}
+    class RestaurantAdapter extends CursorAdapter {
+        RestaurantAdapter(Context context, Cursor cursor, int flags){
+            super(context, cursor, flags);
+        }
+
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            View row = convertView;
-            RestaurantHolder holder;
-            if(row==null){
-                LayoutInflater inflater = getLayoutInflater();
-                row=inflater.inflate(R.layout.row, parent,false);
-                holder=new RestaurantHolder(row);
-                row.setTag(holder);
-            }else {
-                holder=(RestaurantHolder)row.getTag();
-            }
-            holder.populateFrom(model.get(position));
+        public void bindView(View view,Context context,Cursor cursor){
+            RestaurantHolder holder =(RestaurantHolder)  view.getTag();
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent){
+            LayoutInflater inflater=getLayoutInflater();
+            View row = inflater.inflate(R.layout.row,parent,false);
+            RestaurantHolder holder = new RestaurantHolder(row);
+            row.setTag(holder);
             return (row);
         }
     }
@@ -207,25 +213,24 @@ public class RestaurantList extends AppCompatActivity {
     AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Restaurant r = model.get(position);
 
-            restaurantName.setText(r.getName());
-            restaurantAddress.setText(r.getAddress());
-            restaurantTel.setText(r.getTelephone());
+            restaurantName.setText(helper.getRestaurantTel(model));
+            restaurantAddress.setText(helper.getRestaurantTel(model));
+            restaurantTel.setText(helper.getRestaurantTel(model));
 
-            if (r.getRestaurantType().equals("Chinese")) {
+            if (helper.getRestaurantType(model).equals("Chinese")) {
                 restaurantTypes.check(R.id.chinese);
-            }else if (r.getRestaurantType().equals("Western")) {
+            }else if (helper.getRestaurantType(model).equals("Western")) {
 
-            }else if (r.getRestaurantType().equals("Indian")) {
+            }else if (helper.getRestaurantType(model).equals("Indian")) {
 
-            }else if (r.getRestaurantType().equals("Indian")) {
+            }else if (helper.getRestaurantType(model).equals("Indian")) {
 
-            }else if (r.getRestaurantType().equals("Indonesia")) {
+            }else if (helper.getRestaurantType(model).equals("Indonesia")) {
 
-            }else if (r.getRestaurantType().equals("Korean")) {
+            }else if (helper.getRestaurantType(model).equals("Korean")) {
 
-            }else if (r.getRestaurantType().equals("Japanese")) {
+            }else if (helper.getRestaurantType(model).equals("Japanese")) {
                 restaurantTypes.check(R.id.thai);
 
             }
