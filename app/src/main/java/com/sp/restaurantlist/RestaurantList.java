@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,6 +36,7 @@ public class RestaurantList extends AppCompatActivity {
     private RestaurantAdapter adapter=null;
     private ListView list;
     private TabHost host;
+    private boolean showMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,44 @@ public class RestaurantList extends AppCompatActivity {
         host.setCurrentTab(1);
         list.setOnItemClickListener(onListClick);
 
+        host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                invalidateOptionsMenu();
+            }
+        });
+    }
+    @Override
+    protected  void onStart(){
+        invalidateOptionsMenu();
+        super.onStart();
+    }
 
+    @Override
+    public void invalidateOptionsMenu(){
+        if(host.getCurrentTab()==0){
+            showMenu=false;
+        } else if(host.getCurrentTab()==1){
+            showMenu=true;
+        }
+        super.invalidateOptionsMenu();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.option, menu);
+        if(showMenu==true)
+            return true;
+        else
+            return false;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case (R.id.about):
+                Toast.makeText(this, "Restaurant List - version 1.0", Toast.LENGTH_LONG).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private View.OnClickListener onSave = new View.OnClickListener() {
@@ -102,8 +142,7 @@ public class RestaurantList extends AppCompatActivity {
                     restType = "Thai";
                     break;
             }
-            //String combineStr = nameStr + "\n" + addressStr + "\n" + telStr + "\n" + restType;
-            //Toast.makeText(v.getContext(),combineStr,Toast.LENGTH_LONG).show();
+
             Restaurant restaurant = new Restaurant();
             restaurant.setName(nameStr);
             restaurant.setAddress(addressStr);
@@ -144,10 +183,10 @@ public class RestaurantList extends AppCompatActivity {
             }
         }
     }
-     class RestaurantAdapter extends ArrayAdapter<Restaurant>{
+    class RestaurantAdapter extends ArrayAdapter<Restaurant>{
         RestaurantAdapter(){super (RestaurantList.this,R.layout.row,model);}
         @Override
-         public View getView(int position, View convertView, ViewGroup parent){
+        public View getView(int position, View convertView, ViewGroup parent){
             View row = convertView;
             RestaurantHolder holder;
             if(row==null){
@@ -158,44 +197,44 @@ public class RestaurantList extends AppCompatActivity {
             }else {
                 holder=(RestaurantHolder)row.getTag();
             }
-                holder.populateFrom(model.get(position));
-                return (row);
+            holder.populateFrom(model.get(position));
+            return (row);
+        }
+    }
+
+
+
+    AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Restaurant r = model.get(position);
+
+            restaurantName.setText(r.getName());
+            restaurantAddress.setText(r.getAddress());
+            restaurantTel.setText(r.getTelephone());
+
+            if (r.getRestaurantType().equals("Chinese")) {
+                restaurantTypes.check(R.id.chinese);
+            }else if (r.getRestaurantType().equals("Western")) {
+
+            }else if (r.getRestaurantType().equals("Indian")) {
+
+            }else if (r.getRestaurantType().equals("Indian")) {
+
+            }else if (r.getRestaurantType().equals("Indonesia")) {
+
+            }else if (r.getRestaurantType().equals("Korean")) {
+
+            }else if (r.getRestaurantType().equals("Japanese")) {
+                restaurantTypes.check(R.id.thai);
+
             }
+            host.setCurrentTab(1);
         }
 
+    };
 
 
-        AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Restaurant r = model.get(position);
-
-                restaurantName.setText(r.getName());
-                restaurantAddress.setText(r.getAddress());
-                restaurantTel.setText(r.getTelephone());
-
-                if (r.getRestaurantType().equals("Chinese")) {
-                    restaurantTypes.check(R.id.chinese);
-                }else if (r.getRestaurantType().equals("Western")) {
-
-                }else if (r.getRestaurantType().equals("Indian")) {
-
-                }else if (r.getRestaurantType().equals("Indian")) {
-
-                }else if (r.getRestaurantType().equals("Indonesia")) {
-
-                }else if (r.getRestaurantType().equals("Korean")) {
-
-                }else if (r.getRestaurantType().equals("Japanese")) {
-                    restaurantTypes.check(R.id.thai);
-
-                }
-                host.setCurrentTab(1);
-            }
-
-        };
-
-
-     }
+}
 
 

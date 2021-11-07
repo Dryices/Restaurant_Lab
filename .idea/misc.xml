@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/hrifi/AndroidStudioProjects/Lab2b/app/src/main/res/layout/main.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/hrifi/AndroidStudioProjects/Lab2b/app/src/main/res/layout/row.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/Lab2a/app/src/main/res/drawable/ic_launcher_background.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/Lab2a/app/src/main/res/layout/main.xml" value="0.3625" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/Lab2a/app/src/main/res/layout/row.xml" value="0.3625" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/Lab2a/app/src/main/res/menu/option.xml" value="0.33" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/Lab2a/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/Restaurant_Lab1/app/src/main/res/layout/main.xml" value="0.26403985507246375" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/Lab1b/app/src/main/res/layout/main.xml" value="0.16" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/Restaurant_Lab/app/src/main/res/layout/main.xml" value="0.20878623188405798" />
+        <entry key="..\:/Users/hrifi/AndroidStudioProjects/Restaurant_Lab/app/src/main/res/layout/row.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
