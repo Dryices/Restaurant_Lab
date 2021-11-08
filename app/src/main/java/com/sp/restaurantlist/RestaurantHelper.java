@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class RestaurantHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "restaurant.db";
+    private static final String DATABASE_NAME = "restaurantlist.db";
     private static final int SCHEMA_VERSION=1;
 
     public RestaurantHelper(Context context){
@@ -18,7 +18,7 @@ public class RestaurantHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
 
         db.execSQL("CREATE TABLE restaurants_table ( _id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "restaurant TEXT, restaurantAddress TEXT, restaurantTel TEXT, restaurantType TEXT);");
+                "restaurantName TEXT, restaurantAddress TEXT, restaurantTel TEXT, restaurantType TEXT);");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db,int oldVersion, int newVersion){
@@ -28,7 +28,7 @@ public class RestaurantHelper extends SQLiteOpenHelper {
     public Cursor getAll(){
         return (getReadableDatabase().rawQuery(
             "SELECT _id, restaurantName,restaurantAddress,restaurantTel,"+
-                    "restaurantType FROM restaurants_table ORDER BY resturauntName",null));
+                    "restaurantType FROM restaurants_table ORDER BY restaurantName",null));
         }
 
     public void insert(String restaurantName, String restaurantAddress,
@@ -46,13 +46,9 @@ public class RestaurantHelper extends SQLiteOpenHelper {
     public String getRestaurantName(Cursor c){
         return (c.getString(1));
     }
-    public String getRestaurantAddress(Cursor c){
-        return (c.getString(2));
-    }
+    public String getRestaurantAddress(Cursor c){ return (c.getString(2)); }
     public String getRestaurantTel(Cursor c){
         return (c.getString(3));
     }
-    public String getRestaurantType(Cursor c){
-        return (c.getString(4));
-    }
+    public String getRestaurantType(Cursor c){ return (c.getString(4)); }
 }

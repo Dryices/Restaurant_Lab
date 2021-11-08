@@ -1,9 +1,6 @@
 package com.sp.restaurantlist;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cursoradapter.widget.CursorAdapter;
-
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +18,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.Context;
+import androidx.cursoradapter.widget.CursorAdapter;
+
 import sp.com.restaurantlist.R;
 
 public class RestaurantList extends AppCompatActivity {
@@ -30,6 +29,7 @@ public class RestaurantList extends AppCompatActivity {
     private Button buttonSave;
     private EditText restaurantAddress;
     private EditText restaurantTel;
+
     private Cursor model=null;
     private RestaurantAdapter adapter=null;
     private ListView list;
@@ -42,14 +42,13 @@ public class RestaurantList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         restaurantName = findViewById(R.id.restaurant_name);
-        restaurantAddress = findViewById(R.id.restaurant_address);
-        restaurantTel = findViewById(R.id.restaurant_tel);
-
-
         restaurantTypes = findViewById(R.id.restaurant_types);
 
         buttonSave =findViewById(R.id.button_save);
         buttonSave.setOnClickListener(onSave);
+
+        restaurantAddress = findViewById(R.id.restaurant_address);
+        restaurantTel = findViewById(R.id.restaurant_tel);
 
         helper=new RestaurantHelper(this);
         list = findViewById(R.id.restaurants);
@@ -163,11 +162,11 @@ public class RestaurantList extends AppCompatActivity {
         }
     };
 
-
     static class RestaurantHolder {
         private TextView restName= null;
         private TextView addr= null;
-        private ImageView icon;
+        private ImageView icon=null;
+
         RestaurantHolder(View row){
             restName=row.findViewById(R.id.restName);
             addr=row.findViewById(R.id.restAdr);
@@ -196,6 +195,7 @@ public class RestaurantList extends AppCompatActivity {
         @Override
         public void bindView(View view,Context context,Cursor cursor){
             RestaurantHolder holder =(RestaurantHolder)  view.getTag();
+            holder.populateFrom(cursor, helper);
         }
 
         @Override
@@ -213,7 +213,7 @@ public class RestaurantList extends AppCompatActivity {
     AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            model.moveToPosition(position);
             restaurantName.setText(helper.getRestaurantTel(model));
             restaurantAddress.setText(helper.getRestaurantTel(model));
             restaurantTel.setText(helper.getRestaurantTel(model));
@@ -221,24 +221,25 @@ public class RestaurantList extends AppCompatActivity {
             if (helper.getRestaurantType(model).equals("Chinese")) {
                 restaurantTypes.check(R.id.chinese);
             }else if (helper.getRestaurantType(model).equals("Western")) {
+                restaurantTypes.check(R.id.western);
 
             }else if (helper.getRestaurantType(model).equals("Indian")) {
-
-            }else if (helper.getRestaurantType(model).equals("Indian")) {
+                restaurantTypes.check(R.id.indian);
 
             }else if (helper.getRestaurantType(model).equals("Indonesia")) {
+                restaurantTypes.check(R.id.indonesian);
 
             }else if (helper.getRestaurantType(model).equals("Korean")) {
+                restaurantTypes.check(R.id.korean);
 
             }else if (helper.getRestaurantType(model).equals("Japanese")) {
-                restaurantTypes.check(R.id.thai);
+                restaurantTypes.check(R.id.japanese);
 
             }
             host.setCurrentTab(1);
         }
 
     };
-
 
 }
 
