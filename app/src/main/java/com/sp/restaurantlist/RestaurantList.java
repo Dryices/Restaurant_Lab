@@ -244,43 +244,22 @@ public class RestaurantList extends AppCompatActivity {
 
     };
     private boolean CheckAllFields() {
-        if (restaurantName.length() == 0 && restaurantAddress.length() == 0 && restaurantTel.length() == 0) {
-            restaurantName.setError("This field is required");
-            restaurantAddress.setError("This field is required");
-            restaurantTel.setError("This field is required");
-            return false;
-        }
-        if (restaurantName.length() == 0 && restaurantAddress.length() == 0) {
-            restaurantName.setError("This field is required");
-            restaurantAddress.setError("This field is required");
-            return false;
-        }
-        if (restaurantAddress.length() == 0 && restaurantTel.length() == 0) {
-            restaurantAddress.setError("This field is required");
-            restaurantTel.setError("This field is required");
-            return false;
-        }
-        if (restaurantTel.length() == 0 && restaurantName.length() == 0) {
-            restaurantTel.setError("This field is required");
-            restaurantName.setError("This field is required");
-            return false;
-        }
+       boolean check =true;
         if (restaurantName.length() == 0) {
             restaurantName.setError("This field is required");
-            return false;
+            check =false;
         }
         if (restaurantAddress.length() == 0) {
             restaurantAddress.setError("This field is required");
-            return false;
+            check=false;
         }
-
         if (restaurantTel.length() == 0) {
             restaurantTel.setError("This field is required");
-            return false;
+            check=false;
         }
 
         // after all validation return true.
-        return true;
+        return check;
     }
 
 }
