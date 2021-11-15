@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RestaurantList">
         <activity
+            android:name="com.sp.restaurantlist.DetailForm"
+            android:exported="true" />
+        <activity
             android:name="com.sp.restaurantlist.RestaurantList"
             android:exported="true">
             <intent-filter>
