@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -39,6 +40,7 @@ public class RestaurantList extends AppCompatActivity {
         list = findViewById(R.id.List);
         model = helper.getAll();
         adapter = new RestaurantAdapter(this, model, 0);
+        list.setOnItemClickListener(onListClick);
         list.setAdapter(adapter);
     }
 
@@ -79,6 +81,17 @@ public class RestaurantList extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            model.moveToPosition(position);
+            String recordID = helper.getID(model);
+            Intent intent;
+            intent = new Intent(RestaurantList.this, DetailForm.class);
+            intent.putExtra ("ID", recordID);
+            startActivity(intent);
+        }
+    };
 
 
     static class RestaurantHolder {

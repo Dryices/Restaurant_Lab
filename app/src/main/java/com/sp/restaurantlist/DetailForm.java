@@ -1,5 +1,6 @@
 package com.sp.restaurantlist;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,8 @@ public class DetailForm extends AppCompatActivity {
     private EditText restaurantAddress;
     private EditText restaurantTel;
 
-    private RestaurantHelper helper =null;
+    private RestaurantHelper helper = null;
+    private String restaurantID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +29,48 @@ public class DetailForm extends AppCompatActivity {
         restaurantName = findViewById(R.id.restaurant_name);
         restaurantTypes = findViewById(R.id.restaurant_types);
 
-        buttonSave =findViewById(R.id.button_save);
+        buttonSave = findViewById(R.id.button_save);
         buttonSave.setOnClickListener(onSave);
 
         restaurantAddress = findViewById(R.id.restaurant_address);
         restaurantTel = findViewById(R.id.restaurant_tel);
+        helper = new RestaurantHelper(this);
 
-        helper=new RestaurantHelper(this);
-
-
+        restaurantID=getIntent().getStringExtra("ID");
+        if (restaurantID!=null){
+            load();
+        }
     }
+
     @Override
-    protected  void onDestroy() {
+    protected void onDestroy() {
         helper.close();
         super.onDestroy();
+    }
+
+    private void load() {
+        Cursor c = helper.getById(restaurantID);
+        c.moveToFirst();
+        restaurantName.setText(helper.getRestaurantName(c));
+        restaurantAddress.setText(helper.getRestaurantAddress(c));
+        restaurantTel.setText(helper.getRestaurantTel(c));
+
+        if (helper.getRestaurantType(c).equals("Chinese")) {
+            restaurantTypes.check(R.id.chinese);
+        } else if (helper.getRestaurantType(c).equals("Western")) {
+            restaurantTypes.check(R.id.western);
+        } else if (helper.getRestaurantType(c).equals("Indian")) {
+            restaurantTypes.check(R.id.indian);
+        } else if (helper.getRestaurantType(c).equals("Indonesian")) {
+            restaurantTypes.check(R.id.indonesian);
+        } else if (helper.getRestaurantType(c).equals("Korean")) {
+            restaurantTypes.check(R.id.korean);
+        } else if (helper.getRestaurantType(c).equals("Japanese")) {
+            restaurantTypes.check(R.id.japanese);
+        } else {
+            restaurantTypes.check(R.id.thai);
+        }
+
     }
 
     private View.OnClickListener onSave = new View.OnClickListener() {
@@ -77,7 +107,11 @@ public class DetailForm extends AppCompatActivity {
                         restType = "Thai";
                         break;
                 }
-                helper.insert(nameStr, addressStr, telStr, restType);
+                if (restaurantID==null) {
+                    helper.insert(nameStr, addressStr, telStr, restType);
+                }else {
+                    helper.update(restaurantID, nameStr, addressStr, telStr, restType);
+                }
 
                 //To close current Activity class and exit
                 finish();
@@ -86,20 +120,19 @@ public class DetailForm extends AppCompatActivity {
     };
 
     private boolean CheckAllFields() {
-        boolean check =true;
+        boolean check = true;
         if (restaurantName.length() == 0) {
             restaurantName.setError("This field is required");
-            check =false;
+            check = false;
         }
         if (restaurantAddress.length() == 0) {
             restaurantAddress.setError("This field is required");
-            check=false;
+            check = false;
         }
         if (restaurantTel.length() == 0) {
             restaurantTel.setError("This field is required");
-            check=false;
+            check = false;
         }
-
         // after all validation return true.
         return check;
     }
