@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/about.xml" value="0.29375" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/activity_testerror.xml" value="0.2796875" />
         <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/detail_form.xml" value="0.33" />
-        <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/main.xml" value="0.1" />
+        <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/main.xml" value="0.25" />
         <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/main2.xml" value="0.1" />
         <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/layout/row.xml" value="0.3625" />
         <entry key="..\:/Users/Harith/AndroidStudioProjects/RestaurantLab/app/src/main/res/menu/option.xml" value="0.3625" />
