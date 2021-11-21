@@ -49,6 +49,12 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/button_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hrif.ifan@gmail.com" />
+
   </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

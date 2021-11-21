@@ -112,7 +112,6 @@ public class DetailForm extends AppCompatActivity {
                 }else {
                     helper.update(restaurantID, nameStr, addressStr, telStr, restType);
                 }
-
                 //To close current Activity class and exit
                 finish();
             }

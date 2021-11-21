@@ -26,7 +26,6 @@ public class RestaurantList extends AppCompatActivity {
     private RestaurantAdapter adapter = null;
     private ListView list;
     private RestaurantHelper helper = null;
-    private TabHost host;
     private TextView empty = null;
     private boolean showMenu = false;
 
