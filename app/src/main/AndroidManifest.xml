@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sp.com.restaurantlist">
+    package="sp.com.restaurantlist" >
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -8,7 +11,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RestaurantList">
+        android:theme="@style/Theme.RestaurantList" >
+        <service
+            android:name="com.sp.restaurantlist.GPSTracker"
+            android:enabled="false"
+            android:exported="false" >
+        </service>
+
         <activity
             android:name="com.sp.restaurantlist.EmailForm"
             android:exported="false" />
@@ -20,7 +29,7 @@
             android:exported="true" />
         <activity
             android:name="com.sp.restaurantlist.RestaurantList"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

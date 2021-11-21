@@ -11,13 +11,13 @@ import android.widget.EditText;
 import sp.com.restaurantlist.R;
 
 public class EmailForm extends AppCompatActivity {
-   private Button button_email
-           ;
+   private Button button_email;
+
    private EditText sendto, subject, body;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_email_form);
+        setContentView(R.layout.email_form);
 
         sendto = findViewById(R.id.sendto);
         subject = findViewById(R.id.editText2);
