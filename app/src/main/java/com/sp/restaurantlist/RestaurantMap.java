@@ -28,6 +28,7 @@ public class RestaurantMap extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_restaurant_map);
 
         lat=getIntent().getDoubleExtra("LATITUDE",0);
         lon=getIntent().getDoubleExtra("LONGITUDE",0);
